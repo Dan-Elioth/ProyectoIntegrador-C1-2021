@@ -23,7 +23,7 @@ public class UsuarioDao extends AppCrud {
 
         if (validarExisteUser(usuario)) {
             usuTO.setUsuario(usuario);
-            usuTO.setIdusuario(generarId(lar,0, "U", 1));
+            usuTO.setIdUsuario(idUsuario);
             usuTO.setPerfil(lte.leer("", "ingrese el perfil del usuario (ADMIN, VENDEDOR, CAJERO):").toUpperCase());
     
             usuTO.setUsuario(lte.leer("", "Ingrese un usuario"));

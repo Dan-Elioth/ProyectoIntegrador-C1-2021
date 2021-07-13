@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 package pe.edu.upeu.modelo;
 
 public class CategoriaTO {
@@ -22,8 +22,5 @@ public class CategoriaTO {
         this.nombre = nombre;
     }
     
-=======
-public class ModeloTO {
->>>>>>> 6570677efbfde2bec4e342b67deea59ada179267
-    
 }
+

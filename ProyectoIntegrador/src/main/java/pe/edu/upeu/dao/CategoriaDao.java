@@ -6,30 +6,26 @@ import pe.edu.upeu.util.LeerArchivo;
 import pe.edu.upeu.util.LeerTeclado;
 import pe.edu.upeu.util.UtilsX;
 
-/**
- * CategoriaDao
- */
-public class CategoriaDao  extends AppCrud{
-
+public class CategoriaDao extends AppCrud{
+   
     LeerArchivo lar;
     CategoriaTO catTO;
 
     LeerTeclado lte=new LeerTeclado();
-    UtilsX ut=new UtilsX(); 
+    UtilsX ut=new UtilsX();
 
-    public Object[][] registrarCategoria() {
 
+    public Object[][] registrarCategoria() {  
         catTO=new CategoriaTO();
-
         lar=new LeerArchivo("Categoria.txt");
-        catTO.setIdCateg(generarId(lar, 0, "P", 1));
-        catTO.setNombre(lte.leer("", "Ingrese nombre de la categoria"));
-
-        return  agregarContenido(lar, catTO);
+        catTO.setIdCateg(generarId(lar, 0, "C", 1));
+        catTO.setNombre(lte.leer("", "Ingrese nombre categoria:"));        
+        return agregarContenido(lar, catTO);
     }
+
     public void reportarCategoria() {
-        lar=new LeerArchivo("Categoria,txt");
+        lar=new LeerArchivo("Categoria.txt");        
         imprimirLista(listarContenido(lar));
-         
-    }  
+    }
+    
 }

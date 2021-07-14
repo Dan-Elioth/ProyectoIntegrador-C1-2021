@@ -28,7 +28,7 @@ public class ProductoDao extends AppCrud{
         proTO.setPorcentUtil(lte.leer(0.0, "Ingrese P. Utilidad:"));
         proTO.setStock(lte.leer(0.0, "Ingrese el Stock:"));
         lar=new LeerArchivo("Producto.txt");
-        agregarContenido(lar, proTO);
+        agregarContenido(lar,proTO);
     }
 
     public void mostrarCategorias() {

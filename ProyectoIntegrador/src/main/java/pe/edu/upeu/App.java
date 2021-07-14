@@ -20,7 +20,10 @@ import static org.fusesource.jansi.Ansi.Color.*;
  */
 public class App {
 
+    static UtilsX ut=new UtilsX();
+
    static Ansi color=new Ansi();
+   static Ansi colors=new Ansi();
 
     public static void registrarCategoria(CategoriaTO categ) {
         System.out.println("--------Registro Categoria----------");
@@ -35,13 +38,13 @@ public class App {
     public static void menuMain() {
         int opcionAlg=0;
         String mensaje="Seleccione el algortimo que desea probar:"+
-        "\n1=Registro Categoria"+
-        "\n12=Reporte Categoria"+
-        "\n2=Registro Producto"+
-        "\n21=Reporte Producto"+
-        "\n3=Registro Usuario"+
+        "\n1=Resgistrar Categoría de un producto"+
+        "\n12=Reporte Categoria de productos"+
+        "\n2=Registrar Producto"+
+        "\n21=Reporte de Stock"+
+        "\n3=Registrar Nuevo usuario"+
         "\n31=Eliminar Usuario"+
-        "\n4=Registro de Ventas"+
+        "\n4=Realizar venta"+
         "\n5=Reporte de Ventas entre rango de fechas"+
         "\n0=Salir del Programa"
         ;
@@ -79,18 +82,23 @@ public class App {
     
     public static void validarAccesoSistema() {
         LeerTeclado lt=new LeerTeclado();
-        System.out.println("****************Acceso al Sistema***********");
+        System.out.println("\n"+(colors.bgBrightCyan().fg(BLACK).a("****************Acceso al Sistema***********").reset()));  
         String usuario=lt.leer("", "Ingrese su Usuario:");
         Console cons=System.console();
         System.out.println("Ingrese su clave:");
         char[] clave=cons.readPassword();
         UsuarioDao uDao=new UsuarioDao();
 
-        if(uDao.login(usuario, String.valueOf(clave))){
-            menuMain();
-        }else{
-            System.out.println("Error!...Intente Nuevamente!!");
-            validarAccesoSistema();
+        try {
+            if(uDao.login(usuario, ut.md5(String.valueOf(clave)))){
+                menuMain();
+            }else{
+                System.out.println("Error!...Intente Nuevamente!!");
+                validarAccesoSistema();
+            }
+            
+        } catch (Exception e) {
+
         }
     }
 
@@ -98,7 +106,7 @@ public class App {
     public static void main( String[] args ){
         //menuMain();
         AnsiConsole.systemInstall();
-        System.out.println( color.bgBrightGreen().fg(RED).a("Hello").fg(BLACK).a(" World").reset() );
+        System.out.println( color.bgBrightGreen().fg(RED).a("««««««««««« Bienvenido a la").fg(BLACK).a(" Pasteleria ™El Caserito™  »»»»»»»»»»").reset() );
         validarAccesoSistema();
     }
 }

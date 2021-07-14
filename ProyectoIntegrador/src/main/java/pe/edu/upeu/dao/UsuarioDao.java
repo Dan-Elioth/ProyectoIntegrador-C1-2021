@@ -8,6 +8,7 @@ import pe.edu.upeu.util.LeerArchivo;
 import pe.edu.upeu.util.LeerTeclado;
 import pe.edu.upeu.util.UtilsX;
 
+
 public class UsuarioDao extends AppCrud{
     LeerArchivo lar;
     UsuarioTO usuTO;
@@ -27,7 +28,10 @@ public class UsuarioDao extends AppCrud{
             Console cons=System.console();
             System.out.println("Ingrese su clave:");
             char[] pws=cons.readPassword();
-            usuTO.setClave(String.valueOf(pws));
+            try {
+                usuTO.setClave(ut.md5(String.valueOf(pws))); 
+            } catch (Exception e) {
+            }
             lar=new LeerArchivo("Usuario.txt");
             agregarContenido(lar, usuTO);
         }else{
@@ -35,6 +39,8 @@ public class UsuarioDao extends AppCrud{
             registarUsuario();
         }
     }
+
+
 
     public boolean login(String usuario, String clave) {
         lar=new LeerArchivo("Usuario.txt");

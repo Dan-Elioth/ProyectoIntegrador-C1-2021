@@ -64,7 +64,7 @@ public class VentaDao extends AppCrud{
         vdTO=new VentaDetalleTO();
         ut.clearConsole();
         System.out.println("*************Agregar Productos a carrito de venta********");
-        mostrarProductos();
+        MostrarProducto2();
         vdTO.setIdProducto(lte.leer("", "Ingrese el ID del Producto:"));
         vdTO.setIdVenta(vTO.getIdVenta());
         lar=new LeerArchivo("VentaDetalle.txt");
@@ -92,8 +92,6 @@ public class VentaDao extends AppCrud{
     }
 
 
-
-
     public void mostrarProductos() {
         lar=new LeerArchivo("Producto.txt");
         Object[][] dataP=listarContenido(lar);
@@ -102,6 +100,25 @@ public class VentaDao extends AppCrud{
             "(P.Unit S/.:"+dataP[i][4]+", Stock:"+dataP[i][6]+"); ");
         }
         System.out.println("");
+    }
+
+    public void MostrarProducto2(){
+        ut.clearConsole();
+        lar=new LeerArchivo("Producto.txt");
+        Object[][] data=listarContenido(lar);
+	    ut.pintarLine('H', 107);
+        ut.pintarTextHeadBody('H', 5, "ID,Nombre del producto,P.Unit S/.,Stock");
+        //System.out.println((color.bgBrightCyan().fg(BLACK).a('H', 5, "ID,Nombre del producto,P.Unit S/.,Stock").reset()));
+        System.out.println("");
+        ut.pintarLine('H', 107);
+        String dataB="";
+        for (int i = 0; i < data.length; i++) {
+            if(Double.parseDouble(data[i][6].toString())>=1){
+                dataB=data[i][0]+","+data[i][1]+","+data[i][2]+","+data[i][6];
+                ut.pintarTextHeadBody('B', 5, dataB);    
+            }
+        
+        }  
     }
 
     public void reporteVentasPorFechas() {

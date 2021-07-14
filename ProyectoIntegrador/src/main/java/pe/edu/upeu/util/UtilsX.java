@@ -2,6 +2,13 @@ package pe.edu.upeu.util;
 
 import java.net.URL;
 import javax.swing.table.TableModel;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 public class UtilsX {
     
     public int fibonaciRecur(final int numero) {
@@ -20,15 +27,22 @@ public class UtilsX {
     return null;
     }
 
+    public  String md5(String text) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        byte[] bytes = messageDigest.digest(text.getBytes());
+        return Hex.encodeHexString(bytes);
+    }
+
+
     public  void pintarLine(char horient, int sizen) {
         for (int i = 0; i <= (sizen); i++) {
             if (horient=='H') {
                 if(i==sizen){
-                    System.out.print("-");
-                }else{System.out.print("--");}
+                    System.out.print("═");
+                }else{System.out.print("═");}
                 
             } else {
-                System.out.print("|");
+                System.out.print("╟");
             }
         }
         if (horient=='H') {
@@ -49,12 +63,12 @@ public class UtilsX {
         catch (final Exception e){
            System.out.println("Error: "+e.getMessage());
         }
-       System.out.println("------------------------------------------------"); 
+       System.out.println("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"); 
     } 
 
     public void pintarTextHeadBody(char type, int sizen, String content) {        
         int sizeX=sizen>=2?4*sizen:4;
-        System.out.print("|");
+        System.out.print("╟");
         String[] data=content.split(",");        
         for (int j = 1; j <= data.length; j++) {
             data[j-1]=data[j-1].length()>sizeX?data[j-1].substring(0,sizeX):data[j-1];            
@@ -78,7 +92,7 @@ public class UtilsX {
                     System.out.print(" "); 
                 }
             }           
-            System.out.print("|"); 
+            System.out.print("╟"); 
         }
         if(type!='H'){
             System.out.println("");

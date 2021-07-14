@@ -1,6 +1,5 @@
 package pe.edu.upeu.dao;
 
-
 import pe.edu.upeu.data.AppCrud;
 import pe.edu.upeu.modelo.CategoriaTO;
 import pe.edu.upeu.modelo.ProductoTO;
@@ -10,65 +9,55 @@ import pe.edu.upeu.util.UtilsX;
 
 public class ProductoDao extends AppCrud{
     LeerArchivo lar;
-
+    
     CategoriaTO catTO;
-    ProductoTO  proTO;
+    ProductoTO proTO;
 
     LeerTeclado lte=new LeerTeclado();
     UtilsX ut=new UtilsX();
 
-    public void crearProducto() {
+    public void registrarProducto() {
         proTO=new ProductoTO();
-        proTO.setNombre(lte.leer("", "Ingrese nombre de producto:"));
-        mostrarCategoria();
-        proTO.setIdCateg(lte.leer("", "Eliga el Id de categoria:"));
+        mostrarCategorias();
+        proTO.setIdCateg(lte.leer("", "Ingrese el Id de Categoria:"));
+        proTO.setNombre(lte.leer("", "Ingrese nombre producto:"));
         lar=new LeerArchivo("Producto.txt");
         proTO.setIdProducto(generarId(lar, 0, "P", 1));
-        proTO.setUnidadMed(lte.leer("", "Ingrrese Unidad de Medida:"));
-        proTO.setPrecioUnit(lte.leer(0.0, "Ingrese el precio Unitario:"));
-        proTO.setPorceUtil(lte.leer(0.0, "Ingrese el porcentaje de utilidad:"));
+        proTO.setUnidaMed(lte.leer("", "Ingrese Undad de medida:"));
+        proTO.setPrecioUnit(lte.leer(0.0, "Ingrese P. Unitario:"));
+        proTO.setPorcentUtil(lte.leer(0.0, "Ingrese P. Utilidad:"));
         proTO.setStock(lte.leer(0.0, "Ingrese el Stock:"));
         lar=new LeerArchivo("Producto.txt");
         agregarContenido(lar, proTO);
     }
 
-
-    public void mostrarCategoria() {
-
+    public void mostrarCategorias() {
         lar=new LeerArchivo("Categoria.txt");
         Object[][] datax=listarContenido(lar);
         for (int i = 0; i < datax.length; i++) {
-            System.out.println(datax[i][0]+"="+datax[i][1]+",");
+            System.out.print(datax[i][0]+"="+datax[i][1]+",");
         }
         System.out.println("");
-        
     }
 
     public void reporteProductos() {
         lar=new LeerArchivo("Producto.txt");
         imprimirLista(listarContenido(lar));
-        
     }
-    
-    public void reportarProducto() {
+    public void reporteProductosT() {
         lar=new LeerArchivo("Producto.txt");
         Object[][] data=listarContenido(lar);
-        String dataX="";
-        ut.pintarLine('H',32);
-        ut.pintarTextHeadBody('H', 2, "ID,Nombre,U.Med,IdCat,P.Unit,P.Util,Stock"); 
+	    ut.pintarLine('H', 31);
+        ut.pintarTextHeadBody('H', 2, "ID,Nombre,IdCateg,U.Medida,P.Unit,Porc.Util,Stock");
         System.out.println("");
-        ut.pintarLine('H',32);       
-       for (int i = 0; i < data.length; i++) {
-           for (int j = 0; j < data[0].length; j++) {
-               if(j==0){
-                dataX+=""+data[i][j];
-               }else{
-                dataX+=","+data[i][j]; 
-               }               
-           }
-           ut.pintarTextHeadBody('B', 2, dataX);  
-           dataX="";
-       }         
+        ut.pintarLine('H', 31);
+        String dataB="";
+        for (int i = 0; i < data.length; i++) {
+            dataB=data[i][0]+","+data[i][1]+","+data[i][2]+","+data[i][3]+
+            ","+data[i][4]+","+data[i][5]+","+data[i][6];
+            ut.pintarTextHeadBody('B', 2, dataB);            
+        }        
     }
-    
+
+        
 }

@@ -64,4 +64,8 @@ public class UsuarioDao extends AppCrud{
         return false;
     }
         
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3109dff31db9cb99df178b4adfd8f8bcacdbadc0

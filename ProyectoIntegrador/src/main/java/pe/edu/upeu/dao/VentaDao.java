@@ -79,8 +79,20 @@ public class VentaDao extends AppCrud{
         vdTO.setPrecioTotal(vdTO.getCantidad()*vdTO.getPrecioUnit());
         lar=new LeerArchivo("VentaDetalle.txt");
         agregarContenido(lar, vdTO);
+        actualizarproducto(dataP, vdTO.getCantidad());
         return vdTO;
     }
+
+    public void actualizarproducto(Object[][] prodTO, double canti){
+        lar=new LeerArchivo("Producto.txt");
+        ProductoTO p=new ProductoTO();
+        p.setIdProducto(prodTO[0][0].toString());
+        p.setStock(Double.parseDouble(prodTO[0][6].toString())-canti);
+        editarRegistro(lar, 0, p.getIdProducto(), p); 
+    }
+
+
+
 
     public void mostrarProductos() {
         lar=new LeerArchivo("Producto.txt");

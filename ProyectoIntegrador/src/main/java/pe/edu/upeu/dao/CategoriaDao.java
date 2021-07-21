@@ -5,6 +5,9 @@ import pe.edu.upeu.modelo.CategoriaTO;
 import pe.edu.upeu.util.LeerArchivo;
 import pe.edu.upeu.util.LeerTeclado;
 import pe.edu.upeu.util.UtilsX;
+import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.Color.*;
 
 public class CategoriaDao extends AppCrud{
    
@@ -24,8 +27,14 @@ public class CategoriaDao extends AppCrud{
     }
 
     public void reportarCategoria() {
-        lar=new LeerArchivo("Categoria.txt");        
+        lar=new LeerArchivo("Categoria.txt");  
+        ut.pintarLine('H',30);
+        ut.pintarLine2('V',0);
+        System.out.print(ansi().fg(YELLOW).a("\tReporte de Categorias").reset());
+        ut.pintarLine2('V',0);
+        System.out.println(""); 
+        ut.pintarLine('H',30);    
         imprimirLista(listarContenido(lar));
     }
     
-}
+}   

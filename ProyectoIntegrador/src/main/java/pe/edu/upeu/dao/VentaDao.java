@@ -12,8 +12,8 @@ import pe.edu.upeu.util.LeerArchivo;
 import pe.edu.upeu.util.LeerTeclado;
 import pe.edu.upeu.util.UtilsX;
 
-import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 
 public class VentaDao extends AppCrud{
@@ -23,9 +23,9 @@ public class VentaDao extends AppCrud{
    ProductoTO prodTO;
    VentaTO ventTO;
    VentaDetalleTO vdTO;
+   ProductoDao prodao; 
    SimpleDateFormat formato=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
    SimpleDateFormat formatoFecha=new SimpleDateFormat("dd-MM-yyyy");    
-   Ansi color=new Ansi();
 
     public void registroVentaGeneral() {
         VentaTO vTO=crearVenta();
@@ -63,9 +63,9 @@ public class VentaDao extends AppCrud{
         
         vdTO=new VentaDetalleTO();
         ut.clearConsole();
-        System.out.println("*************Agregar Productos a carrito de venta********");
+        System.out.println((ansi().bgBrightCyan().fg(BLACK).a("****************Agregar Productos a carrito de venta***********").reset()));
         MostrarProducto2();
-        vdTO.setIdProducto(lte.leer("", "Ingrese el ID del Producto:"));
+        vdTO.setIdProducto(lte.leer("", "Ingrese el ID del Producto:").toUpperCase());
         vdTO.setIdVenta(vTO.getIdVenta());
         lar=new LeerArchivo("VentaDetalle.txt");
         vdTO.setIdVentaDetalle(generarId(lar, 0, "DV", 2));
@@ -79,16 +79,41 @@ public class VentaDao extends AppCrud{
         vdTO.setPrecioTotal(vdTO.getCantidad()*vdTO.getPrecioUnit());
         lar=new LeerArchivo("VentaDetalle.txt");
         agregarContenido(lar, vdTO);
-        actualizarproducto(dataP, vdTO.getCantidad());
+        actualizarproducto1(dataP, vdTO.getCantidad());
         return vdTO;
     }
 
-    public void actualizarproducto(Object[][] prodTO, double canti){
+    public void actualizarproducto1(Object[][] prodTO, double canti){
         lar=new LeerArchivo("Producto.txt");
         ProductoTO p=new ProductoTO();
         p.setIdProducto(prodTO[0][0].toString());
         p.setStock(Double.parseDouble(prodTO[0][6].toString())-canti);
         editarRegistro(lar, 0, p.getIdProducto(), p); 
+    }
+
+
+
+    public void actualizarproducto2(){
+        prodTO=new ProductoTO();
+        prodao=new ProductoDao();
+        System.out.println("************* Actualizar Stock *************");
+        prodao.reporteProductosT();
+        prodTO.setIdProducto(lte.leer("", "Ingrese el ID del Producto:"));
+        lar=new LeerArchivo("Producto.txt");
+        Object[][] proT=buscarContenido(lar, 0, prodTO.getIdProducto());
+        double suma=lte.leer(0.0, "*************Cuanto desea aumentar en el Stock del producto ************* ");
+        actualizarStock(proT, suma);
+    }
+
+    
+
+    public void actualizarStock(Object[][] prodTO, double suma){
+        lar=new LeerArchivo("Producto.txt");
+        ProductoTO pro=new ProductoTO();
+        pro.setIdProducto((prodTO[0][0].toString()));
+        pro.setStock(Double.parseDouble(prodTO[0][6].toString())+suma);
+        editarRegistro(lar, 0, pro.getIdProducto(), pro);
+        
     }
 
 
@@ -106,19 +131,18 @@ public class VentaDao extends AppCrud{
         ut.clearConsole();
         lar=new LeerArchivo("Producto.txt");
         Object[][] data=listarContenido(lar);
-	    ut.pintarLine('H', 107);
+	    ut.pintarLine('H', 83);
         ut.pintarTextHeadBody('H', 5, "ID,Nombre del producto,P.Unit S/.,Stock");
-        //System.out.println((color.bgBrightCyan().fg(BLACK).a('H', 5, "ID,Nombre del producto,P.Unit S/.,Stock").reset()));
         System.out.println("");
-        ut.pintarLine('H', 107);
+        ut.pintarLine('H', 83);
         String dataB="";
         for (int i = 0; i < data.length; i++) {
             if(Double.parseDouble(data[i][6].toString())>=1){
-                dataB=data[i][0]+","+data[i][1]+","+data[i][2]+","+data[i][6];
+                dataB=data[i][0]+","+data[i][1]+","+data[i][4]+","+data[i][6];
                 ut.pintarTextHeadBody('B', 5, dataB);    
             }
-        
         }  
+        ut.pintarLine('H', 83);
     }
 
     public void reporteVentasPorFechas() {
@@ -161,30 +185,26 @@ public class VentaDao extends AppCrud{
             }            
 
             ut.clearConsole();
-            System.out.println("********************Reporte de ventes*************************");
-            System.out.println("*********Entre "+fechaInit+" a "+fechaFin+"  **********");
-            ut.pintarLine('H', 40);
-            ut.pintarTextHeadBody('B', 3, "ID,DNI Cli.,F.Venta,Neto S/.,IGV,P. Total S/.");
-            ut.pintarLine('H', 40);            
+            ut.pintarLine2('H', 125);
+            System.out.println(ansi().fg(YELLOW).a("\t\t\t\t\t\t\t\tReporte de ventes").reset());
+            ut.pintarLine2('H', 125);
+            System.out.println("\t\t\t\t\t\t\tEntre "+fechaInit+" a "+fechaFin);
+            ut.pintarLine2('H', 125);
+            ut.pintarTextHeadBody('B', 5, ansi().fg(RED).a("ID,DNI del Cliente,Fecha-Hora de Venta,Neto S/.,IGV,Precio Total S/.").reset().toString());
+            ut.pintarLine('H', 125);            
             for (Object[] objects : dataReal) {
                 String datacont=objects[0]+","+objects[1]+","+
                 objects[2]+","+objects[3]+","+objects[4]+","+objects[5];
-                ut.pintarTextHeadBody('B', 3, datacont);
+                ut.pintarTextHeadBody('B', 5, datacont);
             }
-            ut.pintarLine('H', 40);        
+            ut.pintarLine('H', 125);        
          
-            System.out.println(color.render("@|red Neto Total:S/. |@ @|green "+(Math.round(netoTotalX*100.0)/100.0)+
+            System.out.println(ansi().render("@|red Neto Total:S/. |@ @|green "+(Math.round(netoTotalX*100.0)/100.0)+
             "|@ | @|red IGV: S/.|@ @|green "+(Math.round(igvX*100.0)/100.0)+"|@  | @|red Monto total: S/. |@ @|green "+
             (Math.round(preciototalX*100.0)/100.0)+"|@"));
             
-            ut.pintarLine('H', 40);
+            ut.pintarLine('H', 125);
             
-            
-            //System.out.println( color.bg(GREEN).a("Hello").fg(GREEN).a(" World").reset() );
-
-            //System.out.println(color.render("@|red Hello"+igvX+" |@ @|green World|@") );
-
-
         } catch (Exception e) {      }
     }
 

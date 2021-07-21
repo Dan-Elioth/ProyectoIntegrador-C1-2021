@@ -6,10 +6,13 @@ import pe.edu.upeu.modelo.ProductoTO;
 import pe.edu.upeu.util.LeerArchivo;
 import pe.edu.upeu.util.LeerTeclado;
 import pe.edu.upeu.util.UtilsX;
+import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.Color.*;
 
 public class ProductoDao extends AppCrud{
-    LeerArchivo lar;
     
+    LeerArchivo lar;
     CategoriaTO catTO;
     ProductoTO proTO;
 
@@ -45,19 +48,21 @@ public class ProductoDao extends AppCrud{
         imprimirLista(listarContenido(lar));
     }
     public void reporteProductosT() {
+        ut.clearConsole();
+        System.out.println(ansi().fg(YELLOW).a("\t\t\t\t\t\tReporte de Stock").reset());
         lar=new LeerArchivo("Producto.txt");
         Object[][] data=listarContenido(lar);
-	    ut.pintarLine('H', 31);
-        ut.pintarTextHeadBody('H', 2, "ID,Nombre,IdCateg,U.Medida,P.Unit,Porc.Util,Stock");
+	    ut.pintarLine('H', 118);
+        ut.pintarTextHeadBody('H', 4, "ID,Nombre,IdCateg,U.Medida,P.Unit,Porc.Util,Stock");
         System.out.println("");
-        ut.pintarLine('H', 31);
+        ut.pintarLine('H', 118);
         String dataB="";
         for (int i = 0; i < data.length; i++) {
             dataB=data[i][0]+","+data[i][1]+","+data[i][2]+","+data[i][3]+
             ","+data[i][4]+","+data[i][5]+","+data[i][6];
-            ut.pintarTextHeadBody('B', 2, dataB);            
-        }        
-    }
-
-        
+            ut.pintarTextHeadBody('B', 4, dataB);            
+        }     
+        ut.pintarLine('H', 118);
+        System.out.println("");   
+    }  
 }

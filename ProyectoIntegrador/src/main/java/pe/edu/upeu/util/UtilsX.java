@@ -9,8 +9,13 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.Color.*;
+
 public class UtilsX {
-    
+
     public int fibonaciRecur(final int numero) {
     if (numero < 2) {
     return numero;
@@ -38,11 +43,27 @@ public class UtilsX {
         for (int i = 0; i <= (sizen); i++) {
             if (horient=='H') {
                 if(i==sizen){
-                    System.out.print("═");
-                }else{System.out.print("═");}
+                    System.out.print(ansi().fg(CYAN).a("═").reset());
+                }else{System.out.print(ansi().fg(CYAN).a("═").reset());}
                 
             } else {
-                System.out.print("╟");
+                System.out.print(ansi().fg(BLUE).a("╟").reset());
+            }
+        }
+        if (horient=='H') {
+            System.out.print("\n");
+        }
+    }
+    public  void pintarLine2(char horient, int sizen) {
+        for (int i = 0; i <= (sizen); i++) {
+            if (horient=='H') {
+                if(i==sizen){
+                    System.out.print(ansi().fg(CYAN).a("-").reset());
+                }else{
+                    System.out.print(ansi().fg(CYAN).a("-").reset());}
+                
+            } else {
+                System.out.print(ansi().fg(CYAN).a(" | ").reset());
             }
         }
         if (horient=='H') {
@@ -63,12 +84,13 @@ public class UtilsX {
         catch (final Exception e){
            System.out.println("Error: "+e.getMessage());
         }
-       System.out.println("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"); 
+       System.out.println(" "); 
     } 
 
-    public void pintarTextHeadBody(char type, int sizen, String content) {        
+    public void pintarTextHeadBody(char type, int sizen, String content) {  
+        AnsiConsole.systemInstall();      
         int sizeX=sizen>=2?4*sizen:4;
-        System.out.print("╟");
+        System.out.print(ansi().fg(CYAN).a("║").reset());
         String[] data=content.split(",");        
         for (int j = 1; j <= data.length; j++) {
             data[j-1]=data[j-1].length()>sizeX?data[j-1].substring(0,sizeX):data[j-1];            
@@ -92,7 +114,7 @@ public class UtilsX {
                     System.out.print(" "); 
                 }
             }           
-            System.out.print("╟"); 
+            System.out.print(ansi().fg(CYAN).a("║").reset());
         }
         if(type!='H'){
             System.out.println("");
